@@ -36,3 +36,5 @@ Diferente de soluções tradicionais baseadas em GPS, o sistema utiliza uma **ab
  [InfluxDB Cloud]
       ▼
     [Grafana]
+
+## 📹 Link do vídeo
