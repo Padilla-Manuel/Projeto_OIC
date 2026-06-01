@@ -1,44 +1,214 @@
-# 📡 Sistema de monitoramento por zonas de veículos de serviço e segurança em Smart Campus 
+# 📡 Sistema de Monitoramento por Zonas de Veículos de Serviço e Segurança em Smart Campus
+
+## 📖 Sobre o Projeto
+
+Este projeto tem como objetivo desenvolver uma solução IoT para monitoramento de veículos de serviço e segurança em ambientes Smart Campus.
+
+A proposta consiste em identificar a localização aproximada dos veículos por meio de zonas previamente definidas e monitorar seu estado operacional (EM MOVIMENTO ou PARADO), permitindo a geração de alertas em tempo real e o armazenamento dos dados para análises futuras.
+
+O sistema foi desenvolvido utilizando ESP32, MQTT, Node-RED, Telegram, InfluxDB e Grafana, simulando uma arquitetura completa de Internet das Coisas aplicada ao contexto acadêmico.
 
 ---
 
-## 📌 Descrição do Projeto
+## 🎯 Objetivos
 
-Este projeto implementa um sistema IoT para monitoramento de veículos de serviço e segurança em um ambiente de **Smart Campus**, com foco na validação de uma arquitetura completa de coleta, processamento e visualização de dados.
-
-Diferente de soluções tradicionais baseadas em GPS, o sistema utiliza uma **abstração espacial por zonas**, permitindo:
-
-- Redução de complexidade computacional e custo  
-- Validação dos fluxos de dados e integração entre sistemas  
-- Teste de regras de negócio em tempo real  
-
-### 🎯 Funcionalidades principais
-
-- Identificação da **zona atual do veículo**
-- Detecção de estado (**movimento / parado**)
-- Geração de **alertas automáticos**
-- Armazenamento de dados históricos
-- Visualização em dashboards analíticos
+- Monitorar veículos de serviço e segurança dentro do campus;
+- Identificar automaticamente a zona onde o veículo se encontra;
+- Detectar estados de movimentação e parada;
+- Gerar alertas automáticos em tempo real;
+- Armazenar dados históricos para análise;
+- Disponibilizar dashboards para monitoramento operacional.
 
 ---
 
-## 🧠 Arquitetura do Sistema
+## 🏗️ Arquitetura do Sistema
 
 ```text
-[Dispositivo IoT]
-      │ (JSON via MQTT)
-      ▼
-   [Broker MQTT]
-      ▼
-   [Node-RED]
-(Processamento + Regras)
-      ▼
- [InfluxDB Cloud]
-      ▼
-    [Grafana]
-
+ESP32 + Sensor
+       │
+       ▼
+ Broker MQTT (HiveMQ)
+       │
+       ▼
+    Node-RED
+(Processamento de Dados)
+       │
+       ├────────► Telegram
+       │          (Alertas)
+       │
+       ▼
+ InfluxDB Cloud
+       │
+       ▼
+    Grafana
+ (Dashboards)
 ```
 
-## 📹 link do video
+---
+
+## 🔧 Tecnologias Utilizadas
+
+### Hardware
+
+- ESP32
+- Potenciômetro (simulação de localização)
+- LED
+
+### Software
+
+- Arduino IDE
+- MQTT
+- HiveMQ Broker
+- Node-RED
+- Telegram Bot API
+- InfluxDB Cloud
+- Grafana
+- Wokwi
+
+---
+
+## 🚗 Funcionamento
+
+O potenciômetro conectado ao ESP32 simula a movimentação do veículo entre diferentes regiões do campus.
+
+### Zonas Monitoradas
+
+| Faixa de Valor | Zona |
+|---------------|-------|
+| 0 - 999 | Portaria 1 |
+| 1000 - 1999 | Portaria 2 |
+| 2000 - 2999 | Portaria 3 |
+| 3000 - 4095 | Portaria 4 |
+
+### Estados Monitorados
+
+- EM MOVIMENTO
+- PARADO
+
+As informações são enviadas em formato JSON para o broker MQTT.
+
+### Exemplo de mensagem MQTT
+
+```json
+{
+  "zona":"Portaria 2",
+  "status":"EM MOVIMENTO",
+  "valor":1185
+}
+```
+
+---
+
+## 🧠 Regras de Negócio
+
+### Identificação da Zona
+
+O sistema identifica automaticamente a portaria atual do veículo utilizando o valor analógico recebido pelo ESP32.
+
+### Identificação do Status
+
+- Diferença superior a 80 unidades → EM MOVIMENTO
+- Diferença inferior ou igual a 80 unidades → PARADO
+
+### Alertas
+
+Sempre que um evento é identificado, o Node-RED gera uma mensagem automática contendo:
+
+- Status do veículo;
+- Portaria atual;
+- Horário do evento.
+
+---
+
+## 📨 Integração com Telegram
+
+O Node-RED processa os dados recebidos e envia notificações automáticas para um bot do Telegram.
+
+### Exemplos de Alertas
+
+```text
+Veículo PARADO na Portaria 1
+```
+
+```text
+Veículo EM MOVIMENTO na Portaria 3
+```
+
+---
+
+## 💾 Banco de Dados
+
+O projeto utiliza o InfluxDB Cloud para armazenamento histórico dos eventos gerados pelo sistema.
+
+Os dados armazenados incluem:
+
+- Zona;
+- Status;
+- Valor do sensor;
+- Data e hora do evento.
+
+---
+
+## 📊 Dashboards Grafana
+
+Os dashboards serão desenvolvidos utilizando Grafana para visualização em tempo real dos indicadores do sistema.
+
+### Indicadores
+
+- Veículos por zona;
+- Histórico de movimentação;
+- Frequência de alertas;
+- Eventos por período;
+- Status atual do veículo.
+
+---
+
+## 📂 Estrutura do Repositório
+
+```text
+📁 codigo-esp32
+ └── esp32_monitoramento.ino
+
+📁 node-red
+ └── fluxo-node-red.json
+
+📁 imagens
+ ├── arquitetura.png
+ ├── dashboard.png
+ └── simulacao-wokwi.png
+
+📁 documentacao
+ └── artigo.pdf
+
+README.md
+```
+
+---
+
+## 📹 Vídeo de Demonstração
 
 https://www.youtube.com/watch?v=rrTZLON0EGM
+
+---
+
+## 👨‍💻 Equipe
+
+Projeto desenvolvido para a disciplina de Objetos Inteligentes Conectados.
+
+**Universidade Presbiteriana Mackenzie**
+
+**Curso:** Sistemas de Informação
+
+---
+
+## 📚 Referências
+
+BANDEIRA, Lucilene; BANDEIRA, Bruno; ARAÚJO NETO, Mario de Sousa; CASIMIRO, Adelaide. *Smart Campus no Brasil: um estudo exploratório*. Congresso do Instituto Franco-Brasileiro de Administração de Empresas (IFBAE), 2021.
+
+Disponível em:
+
+https://ifbae.s3.eu-west-3.amazonaws.com/file/congres/smart-campus-no-brasil-bandeira-etal-640711e03213c507448668.pdf
+
+ONU – Objetivos de Desenvolvimento Sustentável (ODS)
+
+https://brasil.un.org/pt-br/sdgs
