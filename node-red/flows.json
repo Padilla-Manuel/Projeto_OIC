@@ -1,0 +1,379 @@
+[
+    {
+        "id": "9068e859e812748c",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4cc5157016108ae5",
+        "type": "mqtt in",
+        "z": "9068e859e812748c",
+        "name": "",
+        "topic": "smartcampus/veiculo",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "7f05e8cc2c1b2a63",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "6efb6da7770998bb"
+            ]
+        ]
+    },
+    {
+        "id": "6efb6da7770998bb",
+        "type": "json",
+        "z": "9068e859e812748c",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 450,
+        "y": 120,
+        "wires": [
+            [
+                "5b18023c3e5f5d71",
+                "e463eb3ab89ce5e0",
+                "2b5c7641c2a5d543"
+            ]
+        ]
+    },
+    {
+        "id": "2b5c7641c2a5d543",
+        "type": "switch",
+        "z": "9068e859e812748c",
+        "name": "Portaria",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "Portaria 1",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "Portaria 2",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "Portaria 3",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "Portaria 4",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 820,
+        "y": 120,
+        "wires": [
+            [
+                "7a086ce37b922a34"
+            ],
+            [
+                "7a086ce37b922a34"
+            ],
+            [
+                "7a086ce37b922a34"
+            ],
+            [
+                "7a086ce37b922a34"
+            ]
+        ]
+    },
+    {
+        "id": "7a086ce37b922a34",
+        "type": "switch",
+        "z": "9068e859e812748c",
+        "name": "status",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "PARADO",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "EM MOVIMENTO",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1050,
+        "y": 120,
+        "wires": [
+            [
+                "b58f90ad91fc5295"
+            ],
+            [
+                "91b52933b40cd588"
+            ]
+        ]
+    },
+    {
+        "id": "91b52933b40cd588",
+        "type": "function",
+        "z": "9068e859e812748c",
+        "name": "Status Veículo EM MOVIMENTO (com Portaria)",
+        "func": "let dados = msg.payload;\n\nif (typeof dados === \"string\") {\n    dados = JSON.parse(dados);\n}\n\nmsg.payload = {\n    chat_id: 8767403902,\n    text: \"Veiculo \" + dados.status + \" na \" + dados.zona\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1420,
+        "y": 160,
+        "wires": [
+            [
+                "0b4962e7bb963468"
+            ]
+        ]
+    },
+    {
+        "id": "b58f90ad91fc5295",
+        "type": "function",
+        "z": "9068e859e812748c",
+        "name": "Status Veículo Parado (com Portaria)",
+        "func": "let dados = msg.payload;\n\nif (typeof dados === \"string\") {\n    dados = JSON.parse(dados);\n}\n\nmsg.payload = {\n    chat_id: 8767403902,\n    text: \"Veiculo \" + dados.status + \" na \" + dados.zona\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1430,
+        "y": 100,
+        "wires": [
+            [
+                "954f1a0798060df0"
+            ]
+        ]
+    },
+    {
+        "id": "954f1a0798060df0",
+        "type": "http request",
+        "z": "9068e859e812748c",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.telegram.org/bot8615792179:AAGS7iaF4s_YSHx17wAPRMXmbnxE5Zk9Cxc/sendMessage",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1720,
+        "y": 100,
+        "wires": [
+            [
+                "71b91217884d9c8a"
+            ]
+        ]
+    },
+    {
+        "id": "0b4962e7bb963468",
+        "type": "http request",
+        "z": "9068e859e812748c",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.telegram.org/bot8615792179:AAGS7iaF4s_YSHx17wAPRMXmbnxE5Zk9Cxc/sendMessage",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1720,
+        "y": 160,
+        "wires": [
+            [
+                "a5f4905d586f4391"
+            ]
+        ]
+    },
+    {
+        "id": "71b91217884d9c8a",
+        "type": "debug",
+        "z": "9068e859e812748c",
+        "name": "Debug Telegram PARADO",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2000,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "a5f4905d586f4391",
+        "type": "debug",
+        "z": "9068e859e812748c",
+        "name": "Debug Telegram EM MOVIMENTO",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2020,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "5b18023c3e5f5d71",
+        "type": "function",
+        "z": "9068e859e812748c",
+        "name": "function 1",
+        "func": "if (typeof msg.payload === \"string\") {\n    msg.payload = JSON.parse(msg.payload);\n}\n\nmsg.measurement = \"veiculo_status\";\n\nmsg.payload = [\n    {\n        valor: Number(msg.payload.valor)\n    },\n    {\n        zona: String(msg.payload.zona),\n        status: String(msg.payload.status)\n    }\n];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 260,
+        "wires": [
+            [
+                "4c9448537b027437",
+                "e98812be4d1394cc"
+            ]
+        ]
+    },
+    {
+        "id": "e98812be4d1394cc",
+        "type": "influxdb out",
+        "z": "9068e859e812748c",
+        "influxdb": "3cab03834143990d",
+        "name": "InfluxDB SmartCampus",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "SmartCampus",
+        "bucket": "veiculo_monitoramento",
+        "x": 1110,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "e463eb3ab89ce5e0",
+        "type": "debug",
+        "z": "9068e859e812748c",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "4c9448537b027437",
+        "type": "debug",
+        "z": "9068e859e812748c",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "7f05e8cc2c1b2a63",
+        "type": "mqtt-broker",
+        "name": "smartcampus",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3cab03834143990d",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "SmartCampus",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "https://us-east-1-1.aws.cloud2.influxdata.com",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "4ac320f89b611e88",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
