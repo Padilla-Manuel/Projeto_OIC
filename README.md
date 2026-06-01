@@ -153,6 +153,15 @@ Os dados armazenados incluem:
 
 Os dashboards serão desenvolvidos utilizando Grafana para visualização em tempo real dos indicadores do sistema.
 
+<img width="1093" height="543" alt="img1" src="https://github.com/user-attachments/assets/b4eeec55-bada-4b19-b630-977e1473e95a" />
+
+
+<img width="1089" height="537" alt="img2" src="https://github.com/user-attachments/assets/42238787-c1f8-4a30-b69a-ff6d8d04ac7b" />
+
+
+<img width="1091" height="537" alt="image" src="https://github.com/user-attachments/assets/3edf8d87-db9d-4b62-a18d-c0eee1d34fa0" />
+
+
 ### Indicadores
 
 - Veículos por zona;
