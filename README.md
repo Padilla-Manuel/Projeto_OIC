@@ -166,21 +166,18 @@ Os dashboards serão desenvolvidos utilizando Grafana para visualização em tem
 ## 📂 Estrutura do Repositório
 
 ```text
-📁 codigo-esp32
- └── esp32_monitoramento.ino
-
-📁 node-red
- └── fluxo-node-red.json
-
-📁 imagens
- ├── arquitetura.png
- ├── dashboard.png
- └── simulacao-wokwi.png
-
-📁 documentacao
- └── artigo.pdf
-
-README.md
+📁 Projeto_OIC
+│
+├── 📁 Wokwi
+│   ├── diagram.json
+│   ├── libraries.txt
+│   ├── sketch.ino
+│   └── wokwi-project.txt
+│
+├── 📁 node-red
+│   └── fluxo-node-red.json
+│
+└── README.md
 ```
 
 ---
